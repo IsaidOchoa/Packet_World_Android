@@ -1,73 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    tools:context=".LoginActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+    <TextView
+        android:id="@+id/tv_titulo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="24dp"
-        tools:context=".LoginActivity">
+        android:layout_height="wrap_content"
+        android:text="Iniciar Sesión - Conductor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="64dp" />
 
-        <TextView
-            android:id="@+id/tv_titulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Iniciar Sesión - Conductor"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="64dp" />
+    <!-- Etiqueta y campo: Número Personal -->
+    <TextView
+        android:id="@+id/tv_label_numero_personal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Número Personal"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginTop="48dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_numero_personal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_titulo"
-            android:hint="Número Personal">
+    <EditText
+        android:id="@+id/etNumeroPersonal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="textPersonName"
+        android:hint="Ej. NP-000"
+        android:minHeight="48dp"
+        android:importantForAccessibility="yes"
+        android:autofillHints="username" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNumeroPersonal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+    <!-- Etiqueta y campo: Contraseña -->
+    <TextView
+        android:id="@+id/tv_label_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contraseña"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="textPassword"
+        android:hint="Contraseña"
+        android:minHeight="48dp"
+        android:importantForAccessibility="yes"
+        android:autofillHints="password" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_numero_personal"
-            android:hint="Contraseña"
-            app:passwordToggleEnabled="true">
+    <!-- Botón Ingresar -->
+    <Button
+        android:id="@+id/btnIngresar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ingresar"
+        android:layout_marginTop="48dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btnIngresar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Ingresar"
-            android:layout_marginTop="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/til_password" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</LinearLayout>

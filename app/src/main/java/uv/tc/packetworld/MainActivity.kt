@@ -12,44 +12,38 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityMainBinding
-import uv.tc.packetworld.dto.RSAutenticacionConductor
-import uv.tc.packetworld.poko.Conductor
+import uv.tc.packetworld.dto.RSAutenticacionColaborador
+import uv.tc.packetworld.poko.Colaborador
 import uv.tc.packetworld.util.Constantes
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import android.util.Base64
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var conductor: Conductor
+    private lateinit var colaborador: Colaborador  // ✅ Cambiado de "conductor" a "colaborador"
     private var fotoPerfilBytes: ByteArray? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mostrarInformacionConductor()
+        mostrarInformacionColaborador()
     }
 
     override fun onStart() {
         super.onStart()
-        // Cargar foto desde API
-        descargarFotoConductor(conductor.numeroPersonal)
+        descargarFotoColaborador(colaborador.numeroPersonal)
 
-        // Configurar clic en ícono de edición (si se permite)
         binding.ivEditarConductor.setOnClickListener {
-            // Nota: según tus requisitos, algunos campos NO son editables (número personal, sucursal, rol)
             val gson = Gson()
-            val jsonConductor = gson.toJson(conductor)
+            val jsonColaborador = gson.toJson(colaborador)  // ✅ Enviamos el objeto completo
             val intent = Intent(this, EdicionConductorActivity::class.java).apply {
-                putExtra("conductor", jsonConductor)
+                putExtra("colaborador", jsonColaborador)  // ✅ Cambiado a "colaborador"
             }
             startActivity(intent)
         }
 
-        // Permitir selección de foto (si el backend lo soporta)
         binding.ivSeleccionFoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
@@ -58,33 +52,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarInformacionConductor() {
+    private fun mostrarInformacionColaborador() {
         try {
-            val jsonConductor: String? = intent.getStringExtra("conductor")
-            if (!jsonConductor.isNullOrEmpty()) {
+            val jsonColaborador: String? = intent.getStringExtra("colaborador")  // ✅ Cambiado a "colaborador"
+            if (!jsonColaborador.isNullOrEmpty()) {
                 val gson = Gson()
-                val respuestaLogin: RSAutenticacionConductor =
-                    gson.fromJson(jsonConductor, RSAutenticacionConductor::class.java)
-                conductor = respuestaLogin.conductor!!
+                val respuestaLogin: RSAutenticacionColaborador =
+                    gson.fromJson(jsonColaborador, RSAutenticacionColaborador::class.java)
+                colaborador = respuestaLogin.colaborador!!  // ✅ Cambiado a "colaborador"
+
                 // Mostrar datos en UI
-                binding.tvNumeroPersonal.text = conductor.numeroPersonal
+                binding.tvNumeroPersonal.text = colaborador.numeroPersonal
                 binding.tvNombreCompleto.text =
-                    "${conductor.nombre} ${conductor.apellidoPaterno} ${conductor.apellidoMaterno}"
-                binding.tvSucursal.text = "Sucursal: ${conductor.sucursal}"
-                binding.tvRol.text = "Rol: ${conductor.rol}"
+                    "${colaborador.nombre} ${colaborador.apellidoPaterno} ${colaborador.apellidoMaterno}"
+
+                // ✅ Ajuste: en tu JSON, el campo es "idSucursal", no "sucursal"
+                binding.tvSucursal.text = "Sucursal: ${colaborador.idSucursal}"  // O usa nombreSucursal si lo tienes
+
+                binding.tvRol.text = "Rol: ${colaborador.rol}"
             } else {
-                Toast.makeText(this, "No se recibió información del conductor", Toast.LENGTH_LONG).show()
-                finish() // o redirigir a login
+                Toast.makeText(this, "No se recibió información del colaborador", Toast.LENGTH_LONG).show()
+                finish()
             }
         } catch (e: Exception) {
-            Toast.makeText(this, "Error al cargar la información del conductor", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error al cargar la información del colaborador", Toast.LENGTH_LONG).show()
             e.printStackTrace()
         }
     }
 
-    private fun descargarFotoConductor(numeroPersonal: String) {
+    private fun descargarFotoColaborador(numeroPersonal: String) {
         Ion.with(this)
-            .load("GET", "${Constantes.URL_API}conductor/obtener-foto/$numeroPersonal")
+            .load("GET", "${Constantes().URL_API}conductor/obtener-foto/$numeroPersonal")
             .asString()
             .setCallback { e, result ->
                 if (e == null) {
@@ -99,13 +97,12 @@ class MainActivity : AppCompatActivity() {
         try {
             if (json.isNotEmpty()) {
                 val gson = Gson()
-                val conductorApi: Conductor = gson.fromJson(json, Conductor::class.java)
-                if (!conductorApi.fotoBase64.isNullOrEmpty()) {
-                    val imgBytes = Base64.decode(conductorApi.fotoBase64, Base64.DEFAULT)
+                val colaboradorApi: Colaborador = gson.fromJson(json, Colaborador::class.java)  // ✅ Cambiado a Colaborador
+                if (!colaboradorApi.fotoBase64.isNullOrEmpty()) {
+                    val imgBytes = Base64.decode(colaboradorApi.fotoBase64, Base64.DEFAULT)
                     val imgBitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.size)
                     binding.ivFotoPerfil.setImageBitmap(imgBitmap)
                 } else {
-                    // Opcional: mostrar ícono predeterminado
                     Toast.makeText(this, "No tienes foto de perfil", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -117,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun subirFotoPerfil() {
         Ion.with(this)
-            .load("PUT", "${Constantes.URL_API}conductor/subir-foto/${conductor.numeroPersonal}")
+            .load("PUT", "${Constantes().URL_API}conductor/subir-foto/${colaborador.numeroPersonal}")
             .setByteArrayBody(fotoPerfilBytes)
             .asString()
             .setCallback { e, result ->
@@ -135,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             val respuesta = gson.fromJson(result, uv.tc.packetworld.dto.Respuesta::class.java)
             if (!respuesta.error) {
                 Toast.makeText(this, respuesta.mensaje, Toast.LENGTH_LONG).show()
-                descargarFotoConductor(conductor.numeroPersonal)
+                descargarFotoColaborador(colaborador.numeroPersonal)
             } else {
                 Toast.makeText(this, "Error: ${respuesta.mensaje}", Toast.LENGTH_LONG).show()
             }
@@ -167,7 +164,7 @@ class MainActivity : AppCompatActivity() {
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos) // 90% calidad
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
                 baos.toByteArray()
             }
         } catch (e: Exception) {

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permiso obligatorio para hacer peticiones HTTP -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -10,16 +13,29 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PacketWorld">
+        android:theme="@style/Theme.PacketWorld"
+        tools:targetApi="31">
+
+        <!-- LoginActivity: debe ser el LAUNCHER -->
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MainActivity: pantalla principal (después del login) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- EdicionConductorActivity: pantalla de edición -->
+        <activity
+            android:name=".EdicionConductorActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

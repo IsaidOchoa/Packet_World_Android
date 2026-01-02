@@ -11,13 +11,13 @@ import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityEdicionConductorBinding
 import uv.tc.packetworld.dto.Respuesta
-import uv.tc.packetworld.poko.Conductor
+import uv.tc.packetworld.poko.Colaborador
 import uv.tc.packetworld.util.Constantes
 
 class EdicionConductorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEdicionConductorBinding
-    private lateinit var conductor: Conductor
+    private lateinit var colaborador: Colaborador  // ✅ Cambiado a Colaborador
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,33 +31,34 @@ class EdicionConductorActivity : AppCompatActivity() {
             insets
         }
 
-        cargarDatosConductor()
+        cargarDatosColaborador()  // ✅ Cambiado
 
         binding.btnActualizar.setOnClickListener {
             if (sonCamposValidos()) {
-                editarDatosConductor()
+                editarDatosColaborador()  // ✅ Cambiado
             }
         }
     }
 
-    private fun cargarDatosConductor() {
-        val jsonConductor = intent.getStringExtra("conductor")
-        if (jsonConductor != null) {
+    private fun cargarDatosColaborador() {  // ✅ Cambiado
+        val jsonColaborador = intent.getStringExtra("colaborador")  // ✅ Cambiado a "colaborador"
+        if (jsonColaborador != null) {
             val gson = Gson()
-            conductor = gson.fromJson(jsonConductor, Conductor::class.java)
+            colaborador = gson.fromJson(jsonColaborador, Colaborador::class.java)
 
             // Mostrar datos NO editables (solo lectura)
-            binding.tvNumeroPersonal.text = conductor.numeroPersonal
-            binding.tvSucursal.text = conductor.sucursal
-            binding.tvRol.text = conductor.rol
+            binding.tvNumeroPersonal.text = colaborador.numeroPersonal
+            // ✅ Ajuste: en tu JSON, el campo es "idSucursal", no "sucursal"
+            binding.tvSucursal.text = "Sucursal: ${colaborador.idSucursal}"  // O usa nombreSucursal si lo tienes
+            binding.tvRol.text = colaborador.rol  // Ya es el nombre del rol
 
             // Cargar datos editables en campos de texto
-            binding.etNombre.setText(conductor.nombre)
-            binding.etApellidoPaterno.setText(conductor.apellidoPaterno)
-            binding.etApellidoMaterno.setText(conductor.apellidoMaterno)
-            binding.etCorreo.setText(conductor.correo)
+            binding.etNombre.setText(colaborador.nombre)
+            binding.etApellidoPaterno.setText(colaborador.apellidoPaterno)
+            binding.etApellidoMaterno.setText(colaborador.apellidoMaterno)
+            binding.etCorreo.setText(colaborador.correo)
         } else {
-            Toast.makeText(this, "No se recibieron los datos del conductor", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "No se recibieron los datos del colaborador", Toast.LENGTH_LONG).show()  // ✅ Cambiado
             finish()
         }
     }
@@ -85,20 +86,20 @@ class EdicionConductorActivity : AppCompatActivity() {
         return valido
     }
 
-    private fun editarDatosConductor() {
+    private fun editarDatosColaborador() {  // ✅ Cambiado
         // Actualizar solo los campos editables
-        conductor.nombre = binding.etNombre.text.toString()
-        conductor.apellidoPaterno = binding.etApellidoPaterno.text.toString()
-        conductor.apellidoMaterno = binding.etApellidoMataterno.text.toString()
-        conductor.correo = binding.etCorreo.text.toString()
+        colaborador.nombre = binding.etNombre.text.toString()
+        colaborador.apellidoPaterno = binding.etApellidoPaterno.text.toString()
+        colaborador.apellidoMaterno = binding.etApellidoMaterno.text.toString()
+        colaborador.correo = binding.etCorreo.text.toString()
 
         val gson = Gson()
-        val conductorJson = gson.toJson(conductor)
+        val colaboradorJson = gson.toJson(colaborador)  // ✅ Cambiado
 
         Ion.with(this)
-            .load("PUT", "${Constantes.URL_API}conductor/editar")
+            .load("PUT", "${Constantes().URL_API}conductor/editar")
             .setHeader("Content-Type", "application/json")
-            .setStringBody(conductorJson)
+            .setStringBody(colaboradorJson)  // ✅ Cambiado
             .asString()
             .setCallback { e, result ->
                 runOnUiThread {
@@ -109,7 +110,7 @@ class EdicionConductorActivity : AppCompatActivity() {
                                 Toast.makeText(this, "Perfil actualizado correctamente", Toast.LENGTH_LONG).show()
                                 // Regresar a MainActivity con los nuevos datos
                                 val intent = Intent()
-                                intent.putExtra("conductor_actualizado", conductorJson)
+                                intent.putExtra("colaborador_actualizado", colaboradorJson)  // ✅ Cambiado
                                 setResult(RESULT_OK, intent)
                                 finish()
                             } else {

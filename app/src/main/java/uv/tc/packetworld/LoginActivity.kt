@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityLoginBinding
-import uv.tc.packetworld.dto.RSAutenticacionConductor
+import uv.tc.packetworld.dto.RSAutenticacionColaborador
 import uv.tc.packetworld.util.Constantes
 
 class LoginActivity : AppCompatActivity() {
@@ -36,25 +36,27 @@ class LoginActivity : AppCompatActivity() {
 
     private fun sonCamposValidos(): Boolean {
         var valido = true
+
         if (binding.etNumeroPersonal.text.isEmpty()) {
             binding.etNumeroPersonal.error = "Número Personal obligatorio"
             valido = false
         }
+
         if (binding.etPassword.text.isEmpty()) {
             binding.etPassword.error = "Contraseña obligatoria"
             valido = false
         }
+
         return valido
     }
 
     private fun consumirAPI(numeroPersonal: String, password: String) {
-        // Desactivar conscrypt si hay problemas de TLS (opcional, según tu backend)
         Ion.getDefault(this).conscryptMiddleware.enable(false)
 
         Ion.with(this)
-            .load("POST", "${Constantes.URL_API}autenticacion/conductor")
+            .load("POST", "${Constantes().URL_API}autenticacion/login")
             .setHeader("Content-Type", "application/x-www-form-urlencoded")
-            .setBodyParameter("numeroPersonal", numeroPersonal)
+            .setBodyParameter("noPersonal", numeroPersonal)
             .setBodyParameter("password", password)
             .asString()
             .setCallback { e, result ->
@@ -62,56 +64,67 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("LoginResponse", result)
                     serializarRespuesta(result)
                 } else {
-                    Toast.makeText(this, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
-                    Log.e("LoginError", e.toString())
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            "Error de conexión: ${e.message ?: "Verifique su conexión"}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.e("LoginError", e.toString())
+                    }
                 }
             }
     }
 
     private fun serializarRespuesta(json: String) {
+        Log.e("RESPUESTA_REAL", json)
         try {
             val gson = Gson()
-            val respuestaLogin = gson.fromJson(json, RSAutenticacionConductor::class.java)
+            val respuestaLogin = gson.fromJson(json, RSAutenticacionColaborador::class.java)
 
-            if (!respuestaLogin.error && respuestaLogin.conductor != null) {
-                // 🔐 Verificación adicional: asegurarse de que el rol sea "Conductor"
-                // Si usas ID de rol, podrías hacer: if (respuestaLogin.idRol == 3)
-                // Pero asumiremos que el backend ya filtra, y solo validamos el texto
-                if (respuestaLogin.conductor.rol.equals("Conductor", ignoreCase = true)) {
-                    Toast.makeText(
-                        this,
-                        "Bienvenido(a) ${respuestaLogin.conductor.nombre}",
-                        Toast.LENGTH_LONG
-                    ).show()
+            runOnUiThread {
+                if (!respuestaLogin.error && respuestaLogin.colaborador != null) {
+                    val colaborador = respuestaLogin.colaborador
 
-                    irPantallaPrincipal(json)
+                    // ✅ Validación de rol: solo conductores
+                    if (colaborador.rol.equals("Conductor", ignoreCase = true)) {
+                        Toast.makeText(
+                            this,
+                            "Bienvenido(a) ${colaborador.nombre}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        irPantallaPrincipal(json)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Acceso denegado: esta aplicación es solo para conductores",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 } else {
+                    // ✅ Mensaje de error del backend
                     Toast.makeText(
                         this,
-                        "Acceso denegado: solo conductores pueden iniciar sesión",
+                        respuestaLogin.mensaje ?: "Credenciales incorrectas",
                         Toast.LENGTH_LONG
                     ).show()
                 }
-            } else {
-                Toast.makeText(
-                    this,
-                    respuestaLogin.mensaje ?: "Credenciales incorrectas",
-                    Toast.LENGTH_LONG
-                ).show()
             }
         } catch (e: Exception) {
             Log.e("LoginParseError", e.toString())
-            Toast.makeText(
-                this,
-                "Error al procesar la respuesta del servidor",
-                Toast.LENGTH_LONG
-            ).show()
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    "Error al procesar la respuesta del servidor",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
     private fun irPantallaPrincipal(json: String) {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("conductor", json)
+        intent.putExtra("colaborador", json)
         startActivity(intent)
         finish()
     }
