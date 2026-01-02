@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PacketWorld"
         tools:targetApi="31">
 
-        <!-- LoginActivity: debe ser el LAUNCHER -->
+        <!-- LoginActivity: punto de entrada de la app -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -26,14 +26,24 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity: pantalla principal (después del login) -->
+        <!-- MainActivity: pantalla principal tras login -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
-        <!-- EdicionConductorActivity: pantalla de edición -->
+        <!-- Edición de perfil del conductor -->
         <activity
             android:name=".EdicionConductorActivity"
+            android:exported="false" />
+
+        <!-- Lista de envíos asignados al conductor -->
+        <activity
+            android:name=".ListaEnviosActivity"
+            android:exported="false" />
+
+        <!-- Detalle de un envío específico -->
+        <activity
+            android:name=".DetalleEnvioActivity"
             android:exported="false" />
 
     </application>

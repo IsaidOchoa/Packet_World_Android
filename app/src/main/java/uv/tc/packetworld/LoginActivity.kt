@@ -77,7 +77,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun serializarRespuesta(json: String) {
-        Log.e("RESPUESTA_REAL", json)
         try {
             val gson = Gson()
             val respuestaLogin = gson.fromJson(json, RSAutenticacionColaborador::class.java)

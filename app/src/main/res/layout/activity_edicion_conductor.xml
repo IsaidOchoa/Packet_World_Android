@@ -11,22 +11,40 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_titulo"
+            <LinearLayout
+                android:id="@+id/llBackHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Editar Perfil"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginTop="16dp" />
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivBack"
+                    android:layout_width="45dp"
+                    android:layout_height="42dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Regresar"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_arrow_back_24" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Editar Perfil"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <!-- Número Personal (NO editable) -->
             <TextView
@@ -36,7 +54,7 @@
                 android:text="Número Personal"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginTop="32dp" />
+                android:layout_marginTop="16dp" />
 
             <TextView
                 android:id="@+id/tvNumeroPersonal"
@@ -165,6 +183,95 @@
                 android:importantForAccessibility="yes"
                 android:autofillHints="emailAddress"
                 android:hint="Correo Electrónico" />
+
+            <!-- Número de Licencia (solo para conductores) -->
+            <TextView
+                android:id="@+id/tv_label_licencia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número de Licencia"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/etLicencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:importantForAccessibility="yes"
+                android:hint="Número de Licencia"
+                android:visibility="gone"/>
+
+            <!-- Sección de Cambio de Contraseña -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cambio de Contraseña"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="32dp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_label_password_actual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraseña Actual"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etPasswordActual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:importantForAccessibility="yes"
+                android:hint="Contraseña actual" />
+
+            <TextView
+                android:id="@+id/tv_label_password_nueva"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nueva Contraseña"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etPasswordNueva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:importantForAccessibility="yes"
+                android:hint="Nueva contraseña" />
+
+            <TextView
+                android:id="@+id/tv_label_password_confirmar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Nueva Contraseña"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/etPasswordConfirmar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:importantForAccessibility="yes"
+                android:hint="Confirmar nueva contraseña" />
 
             <!-- Botón Actualizar -->
             <Button

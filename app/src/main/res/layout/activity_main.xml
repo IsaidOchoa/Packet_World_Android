@@ -118,4 +118,25 @@
         android:text="Conductor"
         android:textSize="14sp" />
 
+    <Button
+        android:id="@+id/btnEnvios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📦 Mis Envíos"
+        android:layout_below="@id/tv_rol"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp" />
+
+    <Button
+        android:id="@+id/btnUnidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🚚 Mi Unidad"
+        android:layout_below="@id/btnEnvios"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp" />
+
 </RelativeLayout>
