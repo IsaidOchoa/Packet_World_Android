@@ -1,9 +1,7 @@
 package uv.tc.packetworld
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import uv.tc.packetworld.databinding.ItemEnvioBinding
 import uv.tc.packetworld.poko.Envio
@@ -37,8 +35,12 @@ class EnvioAdapter(
     class EnvioViewHolder(private val binding: ItemEnvioBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(envio: Envio) {
             binding.tvGuia.text = envio.numeroGuia
-            binding.tvDireccion.text = envio.direccionDestino
-            binding.tvEstatus.text = envio.estatus
+
+            // ✅ Construir dirección completa a partir de los campos disponibles
+            val direccionCompleta = "${envio.calleDestino} ${envio.numeroDestino}".trim()
+            binding.tvDireccion.text = if (direccionCompleta.isNotEmpty()) direccionCompleta else "Sin dirección"
+
+            binding.tvEstatus.text = envio.estatus ?: "Sin estatus"
         }
     }
 }

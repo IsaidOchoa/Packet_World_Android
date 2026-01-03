@@ -13,32 +13,54 @@ import uv.tc.packetworld.util.Constantes
 class DetalleEnvioActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetalleEnvioBinding
-    private lateinit var envio: Envio
     private lateinit var numeroPersonal: String
+    private lateinit var numeroGuia: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleEnvioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val jsonEnvio = intent.getStringExtra("envio") ?: run {
-            Toast.makeText(this, "Envío no recibido", Toast.LENGTH_SHORT).show()
-            finish()
+        binding.ivBack.setOnClickListener {
+            finish() // Esto regresará a ListaEnviosActivity
+        }
+
+        // Recibir datos mínimos
+        numeroGuia = intent.getStringExtra("numeroGuia") ?: run {
+            finishWithError("Número de guía no recibido")
             return
         }
         numeroPersonal = intent.getStringExtra("numeroPersonal") ?: ""
 
-        envio = Gson().fromJson(jsonEnvio, Envio::class.java)
-
-        mostrarDatosEnvio()
+        // Cargar el envío completo desde el backend
+        cargarEnvioCompleto(numeroGuia)
         configurarSpinnerYBoton()
     }
 
-    private fun mostrarDatosEnvio() {
+    private fun cargarEnvioCompleto(guia: String) {
+        Ion.with(this)
+            .load("${Constantes().URL_API}envio/buscar/$guia")
+            .asJsonObject()
+            .setCallback { e, json ->
+                if (e == null && json != null) {
+                    try {
+                        val envio = Gson().fromJson(json.toString(), Envio::class.java)
+                        mostrarDatosEnvio(envio)
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                        finishWithError("Error al cargar detalles del envío")
+                    }
+                } else {
+                    finishWithError("No se pudo cargar el envío")
+                }
+            }
+    }
+
+    private fun mostrarDatosEnvio(envio: Envio) {
         binding.tvNumeroGuia.text = envio.numeroGuia
-        binding.tvSucursalOrigen.text = envio.sucursalOrigen ?: "N/A"
+        binding.tvSucursalOrigen.text = envio.nombreSucursalOrigen ?: "N/A"
         binding.tvDestinatario.text = envio.nombreDestinatario ?: "N/A"
-        binding.tvDireccionCompleta.text = envio.direccionCompleta ?: envio.direccionDestino
+        binding.tvDireccionCompleta.text = "${envio.calleDestino} ${envio.numeroDestino}"
         binding.tvEstatusActual.text = "Estatus actual: ${envio.estatus}"
 
         // Mostrar paquetes
@@ -47,36 +69,38 @@ class DetalleEnvioActivity : AppCompatActivity() {
         } ?: "Sin paquetes"
         binding.tvPaquetes.text = paquetesText
 
-        // Contacto cliente
+        // Datos del cliente (ajusta según lo que devuelva tu backend)
         binding.tvNombreCliente.text = envio.nombreCliente ?: "N/A"
-        binding.tvTelefonoCliente.text = envio.telefonoCliente ?: "N/A"
-        binding.tvCorreoCliente.text = envio.correoCliente ?: "N/A"
+        // Nota: Si tu backend no devuelve teléfono/correo, comenta estas líneas
+        // binding.tvTelefonoCliente.text = envio.telefonoCliente ?: "N/A"
+        // binding.tvCorreoCliente.text = envio.correoCliente ?: "N/A"
     }
 
     private fun configurarSpinnerYBoton() {
         val estatusOpciones = arrayOf("En tránsito", "Detenido", "Entregado", "Cancelado")
-        binding.spinnerEstatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, estatusOpciones)
+        binding.spinnerEstatus.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            estatusOpciones
+        )
 
-        // Seleccionar el estatus actual
-        val indexActual = estatusOpciones.indexOf(envio.estatus)
-        if (indexActual >= 0) binding.spinnerEstatus.setSelection(indexActual)
-
+        // Configurar botón
         binding.btnActualizarEstatus.setOnClickListener {
             val nuevoEstatus = binding.spinnerEstatus.selectedItem.toString()
             val comentario = binding.etComentario.text.toString().trim()
 
-            // Validación: comentario obligatorio si es "Detenido" o "Cancelado"
             if ((nuevoEstatus == "Detenido" || nuevoEstatus == "Cancelado") && comentario.isEmpty()) {
                 Toast.makeText(this, "El comentario es obligatorio para este estatus.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            actualizarEstatusEnServidor(envio.numeroGuia, nuevoEstatus, comentario)
+            actualizarEstatusEnServidor(numeroGuia, nuevoEstatus, comentario)
         }
     }
 
     private fun actualizarEstatusEnServidor(guia: String, estatus: String, comentario: String) {
-        val url = "${Constantes().URL_API}envios/actualizar-estatus"
+        // Nota: Asegúrate de que este endpoint exista en tu backend
+        val url = "${Constantes().URL_API}envio/actualizar-estatus"
         val body = """
             {
                 "numeroGuia": "$guia",
@@ -93,11 +117,16 @@ class DetalleEnvioActivity : AppCompatActivity() {
             .setCallback { e, result ->
                 if (e == null) {
                     Toast.makeText(this, "Estatus actualizado correctamente", Toast.LENGTH_SHORT).show()
-                    envio.estatus = estatus // Actualizar localmente
+                    // Actualizar UI
                     binding.tvEstatusActual.text = "Estatus actual: $estatus"
                 } else {
                     Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    private fun finishWithError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

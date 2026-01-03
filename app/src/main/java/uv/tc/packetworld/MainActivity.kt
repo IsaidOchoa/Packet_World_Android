@@ -108,9 +108,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnEnvios.setOnClickListener {
             val gson = Gson()
-            val jsonColaborador = gson.toJson(colaborador)
+            val colaboradorLigero = colaborador.copy(fotoBase64 = null)
+            val jsonLigero = gson.toJson(colaboradorLigero)
             val intent = Intent(this, ListaEnviosActivity::class.java).apply {
-                putExtra("colaborador", jsonColaborador)
+                putExtra("colaborador", jsonLigero)
             }
             startActivity(intent)
         }

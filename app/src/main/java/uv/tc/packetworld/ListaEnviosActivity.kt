@@ -15,26 +15,30 @@ class ListaEnviosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityListaEnviosBinding
     private lateinit var adapter: EnvioAdapter
-    private lateinit var colaborador: uv.tc.packetworld.poko.Colaborador
+    private lateinit var numeroPersonal: String // ✅ Solo esto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListaEnviosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Recibir colaborador
+        binding.ivBack.setOnClickListener {
+            finish() // Esto regresará a ListaEnviosActivity
+        }
+
+        //Leer el colaborador del Intent y extraer numeroPersonal
         val json = intent.getStringExtra("colaborador") ?: run {
             Toast.makeText(this, "Error: colaborador no recibido", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
-        colaborador = Gson().fromJson(json, uv.tc.packetworld.poko.Colaborador::class.java)
+        val colaborador = Gson().fromJson(json, uv.tc.packetworld.poko.Colaborador::class.java)
+        numeroPersonal = colaborador.numeroPersonal
 
         adapter = EnvioAdapter { envio ->
-            // Al tocar un envío, abrir detalle
             val intent = Intent(this, DetalleEnvioActivity::class.java).apply {
-                putExtra("envio", Gson().toJson(envio))
-                putExtra("numeroPersonal", colaborador.numeroPersonal)
+                putExtra("numeroGuia", envio.numeroGuia)
+                putExtra("numeroPersonal", numeroPersonal) // ✅ Usamos la variable local
             }
             startActivity(intent)
         }
@@ -42,30 +46,25 @@ class ListaEnviosActivity : AppCompatActivity() {
         binding.rvEnvios.layoutManager = LinearLayoutManager(this)
         binding.rvEnvios.adapter = adapter
 
-        cargarEnviosDelConductor(colaborador.numeroPersonal)
+        cargarEnviosDelConductor(numeroPersonal) // ✅ Usamos la variable local
     }
 
     private fun cargarEnviosDelConductor(numeroPersonal: String) {
         Ion.with(this)
-            .load("${Constantes().URL_API}envios/conductor/$numeroPersonal")
-            .asString()  // ← Cambia de .asJsonArray() a .asString()
-            .setCallback { e, result ->
-                if (e == null) {
-                    // 🔎 IMPRIME EL JSON PARA VER SU ESTRUCTURA REAL
-                    println("JSON RECIBIDO: $result")
-
+            .load("${Constantes().URL_API}envio/conductor/$numeroPersonal")
+            .asJsonArray()
+            .setCallback { e, jsonArray ->
+                if (e == null && jsonArray != null) {
                     try {
-                        val gson = Gson()
-                        // Si es un arreglo directo:
-                        val envios = gson.fromJson(result, Array<Envio>::class.java).toList()
-                        // Si es un objeto contenedor, ver paso 2
+                        val envios = Gson().fromJson(jsonArray, Array<Envio>::class.java).toList()
                         adapter.updateEnvios(envios)
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        Toast.makeText(this, "Error al parsear: ${ex.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Error al procesar envíos", Toast.LENGTH_LONG).show()
                     }
                 } else {
-                    Toast.makeText(this, "Error de red: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "No se pudieron cargar los envíos", Toast.LENGTH_LONG).show()
+                    e?.printStackTrace()
                 }
             }
     }
