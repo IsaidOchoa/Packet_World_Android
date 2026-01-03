@@ -132,8 +132,8 @@ class EdicionConductorActivity : AppCompatActivity() {
                 nombre = binding.etNombre.text.toString(),
                 apellidoPaterno = binding.etApellidoPaterno.text.toString(),
                 apellidoMaterno = binding.etApellidoMaterno.text.toString(),
-                correo = binding.etCorreo.text.toString().ifEmpty { null },
-                numeroLicencia = if (colaborador.idRol == 3) binding.etLicencia.text.toString() else colaborador.numeroLicencia,
+                correo = binding.etCorreo.text.toString().ifEmpty { "" },
+                numeroLicencia = if (colaborador.idRol == 3) binding.etLicencia.text.toString().ifEmpty { "" } else colaborador.numeroLicencia,
                 numeroPersonal = colaborador.numeroPersonal,
                 rol = colaborador.rol,
                 idRol = colaborador.idRol,
@@ -233,7 +233,7 @@ class EdicionConductorActivity : AppCompatActivity() {
                 nombre = binding.etNombre.text.toString(),
                 apellidoPaterno = binding.etApellidoPaterno.text.toString(),
                 apellidoMaterno = binding.etApellidoMaterno.text.toString(),
-                correo = binding.etCorreo.text.toString().ifEmpty { null },
+                correo = binding.etCorreo.text.toString().ifEmpty { "" },
                 numeroLicencia = if (colaborador.idRol == 3) binding.etLicencia.text.toString() else colaborador.numeroLicencia
             )
 

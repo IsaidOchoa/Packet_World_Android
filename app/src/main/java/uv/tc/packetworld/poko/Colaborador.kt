@@ -1,16 +1,17 @@
 package uv.tc.packetworld.poko
 
 data class Colaborador(
-    var nombre: String,
-    var apellidoPaterno: String,
-    var apellidoMaterno: String,
-    var correo: String?,
-    var numeroLicencia: String? = null, // ← Agrega este campo
-    val numeroPersonal: String,
-    val rol: String,
-    val idRol: Int,
-    val idSucursal: Int,
-    val curp: String?,
-    var fotoBase64: String? = null,
-    val idColaborador: Int = 0 // ← Agrega este campo (importante para las actualizaciones)
+    val idColaborador: Int = 0,
+    val nombre: String = "",
+    val apellidoPaterno: String = "",
+    val apellidoMaterno: String = "", // ← Cambiado a no nullable
+    val curp: String = "",
+    val correo: String = "",          // ← Cambiado a no nullable
+    val numeroPersonal: String = "",
+    val numeroLicencia: String = "",  // ← Cambiado a no nullable
+    val idRol: Int = 0,
+    val rol: String = "",
+    val idSucursal: Int = 0,
+    val nombreSucursal: String = "",
+    val fotoBase64: String? = null
 )
