@@ -6,137 +6,228 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/iv_foto_perfil"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:src="@mipmap/ic_launcher_round"
-        android:contentDescription="Foto de perfil" />
+    <!-- Header con 3 secciones -->
+    <LinearLayout
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="#3471db">
 
-    <ImageView
-        android:id="@+id/iv_seleccion_foto"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@android:drawable/ic_menu_camera"
-        android:contentDescription="Cambiar foto"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="125dp" />
+        <!-- Sección 1: Logout -->
+        <ImageView
+            android:id="@+id/ivLogout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="Cerrar sesión"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/logout_icon" />
 
-    <ImageView
-        android:id="@+id/iv_editar_conductor"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@android:drawable/ic_menu_edit"
-        android:contentDescription="Editar perfil"
-        android:layout_alignParentEnd="true"
+        <!-- Sección 2: Título -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Página de Inicio"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Sección 3: Editar -->
+        <ImageView
+            android:id="@+id/iv_editar_conductor"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:contentDescription="Editar perfil"
+            android:layout_marginStart="16dp" />
+
+    </LinearLayout>
+
+    <!-- Contenedor de la foto de perfil -->
+    <RelativeLayout
+        android:id="@+id/rlFotoContainer"
+        android:layout_width="144dp"
+        android:layout_height="152dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/llHeader"
+        android:layout_marginTop="24dp">
+
+        <!-- Foto de perfil -->
+        <ImageView
+            android:id="@+id/iv_foto_perfil"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="Foto de perfil"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <!-- Botón de cámara en esquina inferior derecha -->
+        <ImageView
+            android:id="@+id/iv_seleccion_foto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:contentDescription="Cambiar foto"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="-8dp"
+            android:layout_marginBottom="-8dp" />
+
+    </RelativeLayout>
+
+    <!-- Información del conductor -->
+    <LinearLayout
+        android:id="@+id/llInfoConductor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlFotoContainer"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp">
 
-    <TextView
-        android:id="@+id/tv_titulo_numero_personal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Número Personal"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/iv_seleccion_foto"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp" />
+        <!-- Número Personal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datos del colaborador:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/tv_titulo_numero_personal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de Personal"
+            android:textColor="#7F8C8D"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"/>
 
-    <TextView
-        android:id="@+id/tv_numero_personal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_titulo_numero_personal"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="7dp"
-        android:text="1234567890"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_numero_personal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="N/A"
+            android:textColor="#2C3E50"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_titulo_nombre_completo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre Completo"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/tv_numero_personal"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp" />
+        <!-- Línea divisora -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#E0E0E0" />
 
-    <TextView
-        android:id="@+id/tv_nombre_completo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_titulo_nombre_completo"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:text="Isaid Ochoa Tadeo"
-        android:textSize="14sp" />
+        <!-- Nombre Completo -->
+        <TextView
+            android:id="@+id/tv_titulo_nombre_completo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Nombre Completo"
+            android:textColor="#7F8C8D"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_titulo_sucursal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sucursal"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/tv_nombre_completo"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp" />
+        <TextView
+            android:id="@+id/tv_nombre_completo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="N/A"
+            android:textColor="#2C3E50"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_sucursal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_titulo_sucursal"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:text="CDMX Sur"
-        android:textSize="14sp" />
+        <!-- Línea divisora -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#E0E0E0" />
 
-    <TextView
-        android:id="@+id/tv_titulo_rol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rol"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/tv_sucursal"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp" />
+        <!-- Sucursal -->
+        <TextView
+            android:id="@+id/tv_titulo_sucursal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Sucursal"
+            android:textColor="#7F8C8D"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_rol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_titulo_rol"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
-        android:text="Conductor"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tv_sucursal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="N/A"
+            android:textColor="#2C3E50"
+            android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/btnEnvios"
+        <!-- Línea divisora -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#E0E0E0" />
+
+        <!-- Rol -->
+        <TextView
+            android:id="@+id/tv_titulo_rol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Rol"
+            android:textColor="#7F8C8D"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_rol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="N/A"
+            android:textColor="#2C3E50"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Botones de acción -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="📦 Mis Envíos"
-        android:layout_below="@id/tv_rol"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_below="@id/llInfoConductor"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp">
 
-    <Button
-        android:id="@+id/btnUnidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="🚚 Mi Unidad"
-        android:layout_below="@id/btnEnvios"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="24dp" />
+        <Button
+            android:id="@+id/btnEnvios"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#3471db"
+            android:text="📦 Mis Envíos"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnUnidad"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="#3471db"
+            android:text="🚚 Mi Unidad"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </RelativeLayout>

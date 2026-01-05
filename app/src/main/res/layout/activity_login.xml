@@ -1,71 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:background="#FFFFFF"
     tools:context=".LoginActivity">
 
-    <TextView
-        android:id="@+id/tv_titulo"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Iniciar Sesión - Conductor"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="64dp" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <!-- Etiqueta y campo: Número Personal -->
-    <TextView
-        android:id="@+id/tv_label_numero_personal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Número Personal"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_marginTop="48dp" />
+        <!-- Logo de la empresa -->
 
-    <EditText
-        android:id="@+id/etNumeroPersonal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="textPersonName"
-        android:hint="Ej. NP-000"
-        android:minHeight="48dp"
-        android:importantForAccessibility="yes"
-        android:autofillHints="username" />
+        <!-- Nombre de la empresa -->
 
-    <!-- Etiqueta y campo: Contraseña -->
-    <TextView
-        android:id="@+id/tv_label_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contraseña"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp" />
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="147dp"
+            android:layout_height="148dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Logo Packet World"
+            android:src="@drawable/ic_logo_packet_world" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="textPassword"
-        android:hint="Contraseña"
-        android:minHeight="48dp"
-        android:importantForAccessibility="yes"
-        android:autofillHints="password" />
+        <TextView
+            android:id="@+id/tvNombreEmpresa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="Packet World - Login"
+            android:textColor="#2C3E50"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    <!-- Botón Ingresar -->
-    <Button
-        android:id="@+id/btnIngresar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingresar"
-        android:layout_marginTop="48dp" />
+        <!-- Subtítulo -->
+        <TextView
+            android:id="@+id/tvSubtitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:text="Sistema de Gestión para Conductores"
+            android:textColor="#7F8C8D"
+            android:textSize="16sp" />
 
-</LinearLayout>
+        <!-- Etiqueta y campo: Número Personal -->
+        <TextView
+            android:id="@+id/tv_label_numero_personal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Número Personal"
+            android:textColor="#2C3E50"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etNumeroPersonal"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="Ej. 000"
+            android:inputType="number"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="16sp" />
+
+        <!-- Etiqueta y campo: Contraseña -->
+        <TextView
+            android:id="@+id/tv_label_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Contraseña"
+            android:textColor="#2C3E50"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="Ingresa tu contraseña"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="16sp" />
+
+        <!-- Botón Ingresar -->
+        <Button
+            android:id="@+id/btnIngresar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="#3471db"
+            android:text="Iniciar Sesión"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

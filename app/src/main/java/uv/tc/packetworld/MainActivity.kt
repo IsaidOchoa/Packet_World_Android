@@ -89,10 +89,31 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    private fun redirigirALogin() {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    private fun confirmarLogout() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Estás seguro de que deseas cerrar sesión?")
+            .setPositiveButton("Sí") { _, _ ->
+                redirigirALogin()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     private fun configurarEventos() {
         binding.ivEditarConductor.setOnClickListener {
             val gson = Gson()
-            val colaboradorLigero = colaborador.copy(fotoBase64 = null) // ✅ Quitamos la foto
+            val colaboradorLigero = colaborador.copy(fotoBase64 = null) // Quitamos la foto
             val jsonLigero = gson.toJson(colaboradorLigero)
             val intent = Intent(this, EdicionConductorActivity::class.java).apply {
                 putExtra("colaborador", jsonLigero)
@@ -119,14 +140,18 @@ class MainActivity : AppCompatActivity() {
         binding.btnUnidad.setOnClickListener {
             Toast.makeText(this, "Funcionalidad de Unidad aún no implementada", Toast.LENGTH_SHORT).show()
         }
+
+        binding.ivLogout.setOnClickListener {
+            confirmarLogout()
+        }
     }
 
     private fun actualizarInterfaz() {
         binding.tvNumeroPersonal.text = colaborador.numeroPersonal
         binding.tvNombreCompleto.text =
             "${colaborador.nombre} ${colaborador.apellidoPaterno} ${colaborador.apellidoMaterno}"
-        binding.tvSucursal.text = "Sucursal: ${colaborador.nombreSucursal}"
-        binding.tvRol.text = "Rol: ${colaborador.rol}"
+        binding.tvSucursal.text = "${colaborador.nombreSucursal}"
+        binding.tvRol.text = "${colaborador.rol}"
 
         mostrarFotoPerfil()
     }

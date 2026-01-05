@@ -51,18 +51,19 @@
                 android:id="@+id/tv_label_numero_personal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Número Personal"
+                android:text="Número de Personal"
+                android:textColor="#7F8C8D"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvNumeroPersonal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="1234567890"
-                android:textSize="14sp" />
+                android:text="N/A"
+                android:textSize="14sp"
+                android:textColor="#7F8C8D"/>
 
             <!-- Sucursal (NO editable) -->
             <TextView
@@ -70,16 +71,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sucursal"
+                android:textColor="#7F8C8D"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="10dp"
+                />
 
             <TextView
                 android:id="@+id/tvSucursal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="CDMX Sur"
+                android:text="N/A"
+                android:textColor="#7F8C8D"
                 android:textSize="14sp" />
 
             <!-- Rol (NO editable) -->
@@ -88,17 +92,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rol"
+                android:textColor="#7F8C8D"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/tvRol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Conductor"
+                android:text="N/A"
+                android:textColor="#7F8C8D"
                 android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="#000000" />
 
             <!-- Nombre -->
             <TextView
@@ -280,7 +292,8 @@
                 android:layout_height="wrap_content"
                 android:text="Actualizar"
                 android:layout_marginTop="48dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#3471db"/>
 
         </LinearLayout>
     </ScrollView>

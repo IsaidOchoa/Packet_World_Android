@@ -10,7 +10,7 @@
         android:id="@+id/tvGuia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GUIA001"
+        android:text="GUIA00X"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@android:color/black" />
@@ -19,7 +19,7 @@
         android:id="@+id/tvDireccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Av. Insurgentes 123, CDMX"
+        android:text="Direccion"
         android:textSize="14sp"
         android:layout_marginTop="4dp" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/tvEstatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="En tránsito"
+        android:text="Estado del envio"
         android:textSize="14sp"
         android:textStyle="italic"
         android:textColor="#FF5722"

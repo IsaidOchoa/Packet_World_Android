@@ -15,7 +15,7 @@ class ListaEnviosActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityListaEnviosBinding
     private lateinit var adapter: EnvioAdapter
-    private lateinit var numeroPersonal: String // ✅ Solo esto
+    private lateinit var numeroPersonal: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +35,12 @@ class ListaEnviosActivity : AppCompatActivity() {
         val colaborador = Gson().fromJson(json, uv.tc.packetworld.poko.Colaborador::class.java)
         numeroPersonal = colaborador.numeroPersonal
 
+        val idColaborador = colaborador.idColaborador
+
         adapter = EnvioAdapter { envio ->
             val intent = Intent(this, DetalleEnvioActivity::class.java).apply {
                 putExtra("numeroGuia", envio.numeroGuia)
-                putExtra("numeroPersonal", numeroPersonal) // ✅ Usamos la variable local
+                putExtra("idColaborador", idColaborador)
             }
             startActivity(intent)
         }
@@ -46,7 +48,7 @@ class ListaEnviosActivity : AppCompatActivity() {
         binding.rvEnvios.layoutManager = LinearLayoutManager(this)
         binding.rvEnvios.adapter = adapter
 
-        cargarEnviosDelConductor(numeroPersonal) // ✅ Usamos la variable local
+        cargarEnviosDelConductor(numeroPersonal)
     }
 
     private fun cargarEnviosDelConductor(numeroPersonal: String) {

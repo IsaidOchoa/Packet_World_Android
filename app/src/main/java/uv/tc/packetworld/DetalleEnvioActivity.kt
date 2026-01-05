@@ -7,32 +7,42 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityDetalleEnvioBinding
+import uv.tc.packetworld.dto.Respuesta
 import uv.tc.packetworld.poko.Envio
 import uv.tc.packetworld.util.Constantes
 
 class DetalleEnvioActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetalleEnvioBinding
-    private lateinit var numeroPersonal: String
-    private lateinit var numeroGuia: String
+    private var idEnvioActual = 0
+    private var idColaborador = 0
+
+    private val estatusAId = mapOf(
+        "En tránsito" to 1,
+        "Detenido" to 2,
+        "Entregado" to 3,
+        "Cancelado" to 4
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleEnvioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.ivBack.setOnClickListener {
-            finish() // Esto regresará a ListaEnviosActivity
+        binding.ivBack.setOnClickListener { finish() }
+
+        idColaborador = intent.getIntExtra("idColaborador", 0)
+        if (idColaborador <= 0) {
+            finishWithError("Acceso no autorizado")
+            return
         }
 
-        // Recibir datos mínimos
-        numeroGuia = intent.getStringExtra("numeroGuia") ?: run {
+        val numeroGuia = intent.getStringExtra("numeroGuia")
+        if (numeroGuia.isNullOrEmpty()) {
             finishWithError("Número de guía no recibido")
             return
         }
-        numeroPersonal = intent.getStringExtra("numeroPersonal") ?: ""
 
-        // Cargar el envío completo desde el backend
         cargarEnvioCompleto(numeroGuia)
         configurarSpinnerYBoton()
     }
@@ -47,8 +57,7 @@ class DetalleEnvioActivity : AppCompatActivity() {
                         val envio = Gson().fromJson(json.toString(), Envio::class.java)
                         mostrarDatosEnvio(envio)
                     } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        finishWithError("Error al cargar detalles del envío")
+                        finishWithError("Error al procesar datos del envío")
                     }
                 } else {
                     finishWithError("No se pudo cargar el envío")
@@ -57,23 +66,21 @@ class DetalleEnvioActivity : AppCompatActivity() {
     }
 
     private fun mostrarDatosEnvio(envio: Envio) {
+        idEnvioActual = envio.idEnvio ?: 0
+
         binding.tvNumeroGuia.text = envio.numeroGuia
         binding.tvSucursalOrigen.text = envio.nombreSucursalOrigen ?: "N/A"
         binding.tvDestinatario.text = envio.nombreDestinatario ?: "N/A"
-        binding.tvDireccionCompleta.text = "${envio.calleDestino} ${envio.numeroDestino}"
-        binding.tvEstatusActual.text = "Estatus actual: ${envio.estatus}"
+        binding.tvDireccionCompleta.text =
+            "${envio.calleDestino ?: ""} ${envio.numeroDestino ?: ""}"
+        binding.tvEstatusActual.text = "Estatus actual: ${envio.estatus ?: "N/A"}"
 
-        // Mostrar paquetes
-        val paquetesText = envio.paquetes?.joinToString("\n") { p ->
-            "📦 ${p.descripcion} (${p.peso} kg)"
+        val paquetes = envio.paquetes?.joinToString("\n") {
+            "📦 ${it.descripcion} (${it.peso} kg)"
         } ?: "Sin paquetes"
-        binding.tvPaquetes.text = paquetesText
 
-        // Datos del cliente (ajusta según lo que devuelva tu backend)
+        binding.tvPaquetes.text = paquetes
         binding.tvNombreCliente.text = envio.nombreCliente ?: "N/A"
-        // Nota: Si tu backend no devuelve teléfono/correo, comenta estas líneas
-        // binding.tvTelefonoCliente.text = envio.telefonoCliente ?: "N/A"
-        // binding.tvCorreoCliente.text = envio.correoCliente ?: "N/A"
     }
 
     private fun configurarSpinnerYBoton() {
@@ -84,43 +91,66 @@ class DetalleEnvioActivity : AppCompatActivity() {
             estatusOpciones
         )
 
-        // Configurar botón
         binding.btnActualizarEstatus.setOnClickListener {
-            val nuevoEstatus = binding.spinnerEstatus.selectedItem.toString()
+            val estatusTexto = binding.spinnerEstatus.selectedItem.toString()
             val comentario = binding.etComentario.text.toString().trim()
 
-            if ((nuevoEstatus == "Detenido" || nuevoEstatus == "Cancelado") && comentario.isEmpty()) {
-                Toast.makeText(this, "El comentario es obligatorio para este estatus.", Toast.LENGTH_SHORT).show()
+            if ((estatusTexto == "Detenido" || estatusTexto == "Cancelado") && comentario.isEmpty()) {
+                Toast.makeText(
+                    this,
+                    "El comentario es obligatorio para este estatus",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            actualizarEstatusEnServidor(numeroGuia, nuevoEstatus, comentario)
+            val idEstado = estatusAId[estatusTexto]
+            if (idEstado == null || idEnvioActual <= 0) {
+                Toast.makeText(this, "Datos inválidos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            actualizarEstatusEnServidor(idEnvioActual, idEstado, comentario, estatusTexto)
         }
     }
 
-    private fun actualizarEstatusEnServidor(guia: String, estatus: String, comentario: String) {
-        // Nota: Asegúrate de que este endpoint exista en tu backend
-        val url = "${Constantes().URL_API}envio/actualizar-estatus"
-        val body = """
-            {
-                "numeroGuia": "$guia",
-                "estatus": "$estatus",
-                "comentario": "$comentario",
-                "numeroPersonal": "$numeroPersonal"
-            }
-        """.trimIndent()
+    private fun actualizarEstatusEnServidor(
+        idEnvio: Int,
+        idEstado: Int,
+        comentario: String?,
+        estatusTexto: String
+    ) {
+        val body = mutableMapOf<String, Any>(
+            "idEnvio" to idEnvio,
+            "idEstadoActual" to idEstado,
+            "idColaborador" to idColaborador
+        )
+
+        if (!comentario.isNullOrEmpty()) {
+            body["comentario"] = comentario
+        }
 
         Ion.with(this)
-            .load("PUT", url)
-            .setJsonObjectBody(Gson().fromJson(body, com.google.gson.JsonObject::class.java))
+            .load("PUT", "${Constantes().URL_API}envio/actualizar-estatus-movil")
+            .setJsonObjectBody(Gson().toJsonTree(body).asJsonObject)
             .asJsonObject()
             .setCallback { e, result ->
-                if (e == null) {
-                    Toast.makeText(this, "Estatus actualizado correctamente", Toast.LENGTH_SHORT).show()
-                    // Actualizar UI
-                    binding.tvEstatusActual.text = "Estatus actual: $estatus"
+                if (e != null || result == null) {
+                    Toast.makeText(
+                        this,
+                        "Error al actualizar estatus",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setCallback
+                }
+
+                val respuesta = Gson().fromJson(result, Respuesta::class.java)
+                if (!respuesta.error) {
+                    Toast.makeText(this, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                    binding.tvEstatusActual.text = "Estatus actual: $estatusTexto"
+                    binding.etComentario.text.clear()
                 } else {
-                    Toast.makeText(this, "Error al actualizar: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, respuesta.mensaje, Toast.LENGTH_LONG).show()
                 }
             }
     }

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colores de Packet World -->
+    <color name="packet_primary">#3498DB</color>    <!-- Azul principal -->
+    <color name="packet_primary_dark">#2980B9</color>
+    <color name="packet_text_primary">#2C3E50</color> <!-- Gris oscuro para texto -->
+    <color name="packet_text_secondary">#7F8C8D</color> <!-- Gris claro para subtítulos -->
+    <color name="packet_input_border">#E0E0E0</color> <!-- Borde para campos -->
+
+    <!-- Colores existentes -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

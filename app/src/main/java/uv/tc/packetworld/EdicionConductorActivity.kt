@@ -53,7 +53,7 @@ class EdicionConductorActivity : AppCompatActivity() {
             colaborador = gson.fromJson(jsonColaborador, Colaborador::class.java)
 
             binding.tvNumeroPersonal.text = colaborador.numeroPersonal
-            binding.tvSucursal.text = "Sucursal: ${colaborador.idSucursal}"
+            binding.tvSucursal.text = "${colaborador.nombreSucursal}"
             binding.tvRol.text = colaborador.rol
 
             binding.etNombre.setText(colaborador.nombre)

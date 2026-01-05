@@ -142,6 +142,13 @@
             android:text="N/A"
             android:layout_marginBottom="16dp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc"
+            android:layout_marginVertical="12dp" />
+
+
         <TextView
             android:id="@+id/tvEstatusActual"
             android:layout_width="match_parent"
@@ -154,7 +161,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuevo estatus:"
+            android:text="Actualizar estatus:"
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
@@ -186,7 +193,8 @@
             android:id="@+id/btnActualizarEstatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Actualizar Estatus" />
+            android:text="Actualizar Estatus"
+            android:backgroundTint="#3471db"/>
 
     </LinearLayout>
 </ScrollView>
