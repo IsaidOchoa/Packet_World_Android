@@ -81,31 +81,48 @@ class EdicionConductorActivity : AppCompatActivity() {
         if (binding.etNombre.text.isNullOrBlank()) {
             binding.etNombre.error = "Nombre obligatorio"
             valido = false
+        } else {
+            binding.etNombre.error = null
         }
+
         if (binding.etApellidoPaterno.text.isNullOrBlank()) {
             binding.etApellidoPaterno.error = "Apellido paterno obligatorio"
             valido = false
+        } else {
+            binding.etApellidoPaterno.error = null
         }
+
         if (binding.etCorreo.text.isNullOrBlank()) {
             binding.etCorreo.error = "Correo obligatorio"
             valido = false
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etCorreo.text).matches()) {
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etCorreo.text.toString()).matches()) {
             binding.etCorreo.error = "Correo inválido"
             valido = false
+        } else {
+            binding.etCorreo.error = null
         }
 
-        if (binding.etPasswordNueva.text.isNotEmpty()) {
+        // Verificar si se quiere cambiar la contraseña
+        if (!binding.etPasswordNueva.text.isNullOrBlank()) {
             if (binding.etPasswordActual.text.isNullOrBlank()) {
                 binding.etPasswordActual.error = "Requerida para cambiar contraseña"
                 valido = false
+            } else {
+                binding.etPasswordActual.error = null
             }
+
             if (binding.etPasswordNueva.text.toString() != binding.etPasswordConfirmar.text.toString()) {
                 binding.etPasswordConfirmar.error = "Las contraseñas no coinciden"
                 valido = false
+            } else {
+                binding.etPasswordConfirmar.error = null
             }
-            if (binding.etPasswordNueva.text.length < 8) {
+
+            if (binding.etPasswordNueva.text?.length ?: 0 < 8) {
                 binding.etPasswordNueva.error = "Mínimo 8 caracteres"
                 valido = false
+            } else {
+                binding.etPasswordNueva.error = null
             }
         }
 
@@ -116,7 +133,7 @@ class EdicionConductorActivity : AppCompatActivity() {
         val operaciones = mutableListOf<String>()
 
         if (hayCambiosPerfil()) operaciones.add("perfil")
-        if (binding.etPasswordNueva.text.isNotEmpty()) operaciones.add("password")
+        if (binding.etPasswordNueva.text.isNullOrBlank()) operaciones.add("password")
 
         if (operaciones.isEmpty()) {
             Toast.makeText(this, "No hay cambios para guardar", Toast.LENGTH_SHORT).show()

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -237,15 +238,23 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
-            <EditText
-                android:id="@+id/etPasswordActual"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:importantForAccessibility="yes"
-                android:hint="Contraseña actual" />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="?attr/colorControlNormal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordActual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:importantForAccessibility="yes"
+                    android:hint="Contraseña actual" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_label_password_nueva"
@@ -256,15 +265,23 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
-            <EditText
-                android:id="@+id/etPasswordNueva"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:importantForAccessibility="yes"
-                android:hint="Nueva contraseña" />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="?attr/colorControlNormal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordNueva"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:importantForAccessibility="yes"
+                    android:hint="Nueva contraseña" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tv_label_password_confirmar"
@@ -275,15 +292,23 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
-            <EditText
-                android:id="@+id/etPasswordConfirmar"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:inputType="textPassword"
-                android:minHeight="48dp"
-                android:importantForAccessibility="yes"
-                android:hint="Confirmar nueva contraseña" />
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="?attr/colorControlNormal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordConfirmar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:minHeight="48dp"
+                    android:importantForAccessibility="yes"
+                    android:hint="Confirmar nueva contraseña" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Botón Actualizar -->
             <Button

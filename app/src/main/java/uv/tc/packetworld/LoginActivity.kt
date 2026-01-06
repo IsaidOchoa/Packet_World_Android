@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityLoginBinding
 import uv.tc.packetworld.dto.RSAutenticacionColaborador
 import uv.tc.packetworld.util.Constantes
+//import uv.tc.packetworld.util.setupPasswordToggle
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //binding.etPassword.setupPasswordToggle()
 
         binding.btnIngresar.setOnClickListener {
             verificarCredenciales()
@@ -37,14 +39,20 @@ class LoginActivity : AppCompatActivity() {
     private fun sonCamposValidos(): Boolean {
         var valido = true
 
-        if (binding.etNumeroPersonal.text.isEmpty()) {
+        if (binding.etNumeroPersonal.text.isNullOrBlank()) {
             binding.etNumeroPersonal.error = "Número Personal obligatorio"
             valido = false
+        } else {
+            // Limpiar el error si el campo ya está lleno
+            binding.etNumeroPersonal.error = null
         }
 
-        if (binding.etPassword.text.isEmpty()) {
+        if (binding.etPassword.text.isNullOrBlank()) {
             binding.etPassword.error = "Contraseña obligatoria"
             valido = false
+        } else {
+            // Limpiar el error si el campo ya está lleno
+            binding.etPassword.error = null
         }
 
         return valido
@@ -85,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
                 if (!respuestaLogin.error && respuestaLogin.colaborador != null) {
                     val colaborador = respuestaLogin.colaborador
 
-                    // ✅ Validación de rol: solo conductores
+                    // Validación de rol: solo conductores
                     if (colaborador.rol.equals("Conductor", ignoreCase = true)) {
                         Toast.makeText(
                             this,
@@ -101,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                         ).show()
                     }
                 } else {
-                    // ✅ Mensaje de error del backend
+                    // Mensaje de error del backend
                     Toast.makeText(
                         this,
                         respuestaLogin.mensaje ?: "Credenciales incorrectas",

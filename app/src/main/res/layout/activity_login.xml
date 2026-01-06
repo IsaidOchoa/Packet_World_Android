@@ -14,10 +14,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Logo de la empresa -->
-
-        <!-- Nombre de la empresa -->
-
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="147dp"
@@ -68,7 +64,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_input_field"
             android:hint="Ej. 000"
-            android:inputType="number"
+            android:inputType="text"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="16sp" />
@@ -84,17 +81,25 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_input_field"
-            android:hint="Ingresa tu contraseña"
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textSize="16sp" />
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="?attr/colorControlNormal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="Ingresa tu contraseña"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Botón Ingresar -->
         <Button

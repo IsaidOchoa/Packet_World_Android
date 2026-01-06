@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            // Guardamos el objeto básico y luego cargamos el completo (con foto)
             colaborador = colaboradorLogin
             cargarPerfilCompleto(colaborador.idColaborador)
 
@@ -79,7 +78,6 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val gson = Gson()
                         colaborador = gson.fromJson(json.toString(), Colaborador::class.java)
-                        // ✅ Ahora sí tenemos fotoBase64, nombre completo, sucursal, etc.
                         actualizarInterfaz()
                     } catch (ex: Exception) {
                         ex.printStackTrace()

@@ -79,6 +79,16 @@ class DetalleEnvioActivity : AppCompatActivity() {
             "📦 ${it.descripcion} (${it.peso} kg)"
         } ?: "Sin paquetes"
 
+        val estaEntregado = envio.estatus?.equals("Entregado", ignoreCase = true) == true
+
+        if (estaEntregado) {
+            // Deshabilitar todos los elementos de control
+            binding.spinnerEstatus.isEnabled = false
+            binding.etComentario.isEnabled = false
+            binding.btnActualizarEstatus.isEnabled = false
+            binding.etComentario.hint = "El envío ya ha sido entregado"
+        }
+
         binding.tvPaquetes.text = paquetes
         binding.tvNombreCliente.text = envio.nombreCliente ?: "N/A"
         binding.tvTelefonoCliente.text = envio.telefonoCliente ?: "N/A"
@@ -97,6 +107,7 @@ class DetalleEnvioActivity : AppCompatActivity() {
             val estatusTexto = binding.spinnerEstatus.selectedItem.toString()
             val comentario = binding.etComentario.text.toString().trim()
 
+            // --- VALIDACIÓN DE COMENTARIO PARA ESTADOS QUE LO REQUIEREN ---
             if ((estatusTexto == "Detenido" || estatusTexto == "Cancelado") && comentario.isEmpty()) {
                 Toast.makeText(
                     this,
@@ -112,8 +123,58 @@ class DetalleEnvioActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            actualizarEstatusEnServidor(idEnvioActual, idEstado, comentario, estatusTexto)
+            // --- DIÁLOGOS DE CONFIRMACIÓN PARA ACCIONES IRREVERSIBLES ---
+            when (estatusTexto) {
+                "Entregado" -> {
+                    mostrarConfirmacionEntrega(idEnvioActual, idEstado, comentario, estatusTexto)
+                }
+                "Cancelado" -> {
+                    mostrarConfirmacionCancelacion(idEnvioActual, idEstado, comentario, estatusTexto)
+                }
+                else -> {
+                    // Para "En tránsito" y "Detenido", actualiza directamente
+                    actualizarEstatusEnServidor(idEnvioActual, idEstado, comentario, estatusTexto)
+                }
+            }
         }
+    }
+
+    private fun mostrarConfirmacionEntrega(
+        idEnvio: Int,
+        idEstado: Int,
+        comentario: String,
+        estatusTexto: String
+    ) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Confirmar Entrega")
+            .setMessage("¿Estás seguro de que deseas marcar este envío como ENTREGADO?\n\n" +
+                    "Una vez confirmado, no podrás modificar el estado ni agregar comentarios a este envío.")
+            .setPositiveButton("Sí, entregar") { _, _ ->
+                actualizarEstatusEnServidor(idEnvio, idEstado, comentario, estatusTexto)
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+    private fun mostrarConfirmacionCancelacion(
+        idEnvio: Int,
+        idEstado: Int,
+        comentario: String,
+        estatusTexto: String
+    ) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Confirmar Cancelación")
+            .setMessage("¿Estás seguro de que deseas CANCELAR este envío?\n\n" +
+                    "Razón: \"$comentario\"\n\n" +
+                    "Una vez cancelado, no podrás modificar el estado de este envío.")
+            .setPositiveButton("Sí, cancelar") { _, _ ->
+                actualizarEstatusEnServidor(idEnvio, idEstado, comentario, estatusTexto)
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun actualizarEstatusEnServidor(
@@ -151,7 +212,14 @@ class DetalleEnvioActivity : AppCompatActivity() {
                     Toast.makeText(this, respuesta.mensaje, Toast.LENGTH_SHORT).show()
                     binding.tvEstatusActual.text = "Estatus actual: $estatusTexto"
                     binding.etComentario.text.clear()
-                } else {
+
+                    // Bloquear la UI si el nuevo estado es final
+                    if (estatusTexto == "Entregado" || estatusTexto == "Cancelado") {
+                        binding.spinnerEstatus.isEnabled = false
+                        binding.etComentario.isEnabled = false
+                        binding.btnActualizarEstatus.isEnabled = false
+                        binding.etComentario.hint = "El envío ya ha sido finalizado"
+                    }
                     Toast.makeText(this, respuesta.mensaje, Toast.LENGTH_LONG).show()
                 }
             }

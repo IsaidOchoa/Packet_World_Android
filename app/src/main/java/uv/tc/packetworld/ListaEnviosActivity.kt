@@ -16,6 +16,7 @@ class ListaEnviosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListaEnviosBinding
     private lateinit var adapter: EnvioAdapter
     private lateinit var numeroPersonal: String
+    private var idColaborador: Int = 0 // Almacenamos el ID para usarlo en onResume
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +24,10 @@ class ListaEnviosActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.ivBack.setOnClickListener {
-            finish() // Esto regresará a ListaEnviosActivity
+            finish()
         }
 
-        //Leer el colaborador del Intent y extraer numeroPersonal
+        // Leer el colaborador del Intent
         val json = intent.getStringExtra("colaborador") ?: run {
             Toast.makeText(this, "Error: colaborador no recibido", Toast.LENGTH_SHORT).show()
             finish()
@@ -34,8 +35,7 @@ class ListaEnviosActivity : AppCompatActivity() {
         }
         val colaborador = Gson().fromJson(json, uv.tc.packetworld.poko.Colaborador::class.java)
         numeroPersonal = colaborador.numeroPersonal
-
-        val idColaborador = colaborador.idColaborador
+        idColaborador = colaborador.idColaborador
 
         adapter = EnvioAdapter { envio ->
             val intent = Intent(this, DetalleEnvioActivity::class.java).apply {
@@ -48,6 +48,10 @@ class ListaEnviosActivity : AppCompatActivity() {
         binding.rvEnvios.layoutManager = LinearLayoutManager(this)
         binding.rvEnvios.adapter = adapter
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         cargarEnviosDelConductor(numeroPersonal)
     }
 
