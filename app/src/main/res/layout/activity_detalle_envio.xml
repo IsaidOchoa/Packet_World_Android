@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Detalle del Envío"
-                android:textSize="25sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -40,15 +40,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Numero de Guía"
+            android:text="Número de Guía"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="20dp"
             android:layout_marginBottom="12dp" />
 
         <TextView
             android:id="@+id/tvNumeroGuia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="15dp"
             android:text="N/A"
             android:layout_marginBottom="8dp" />
 
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:text="Sucursal de origen:"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -64,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -71,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="Destinatario:"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -78,13 +82,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dirección completa:"
+            android:text="Dirección de Destino:"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -92,6 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="12dp" />
 
         <TextView
@@ -99,6 +106,7 @@
             android:layout_height="wrap_content"
             android:text="Paquetes:"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -106,12 +114,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sin paquetes"
+            android:textSize="15dp"
             android:layout_marginBottom="12dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ccc"
+            android:background="#8c8c8c"
             android:layout_marginVertical="12dp" />
 
         <TextView
@@ -119,6 +128,7 @@
             android:layout_height="wrap_content"
             android:text="Contacto del cliente:"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -126,6 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -133,6 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="4dp" />
 
         <TextView
@@ -140,21 +152,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="N/A"
+            android:textSize="15dp"
             android:layout_marginBottom="16dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ccc"
+            android:background="#8c8c8c"
             android:layout_marginVertical="12dp" />
-
 
         <TextView
             android:id="@+id/tvEstatusActual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Estatus actual: En tránsito"
-            android:textStyle="italic"
+            android:text="Estatus actual: Default"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"
             android:layout_marginBottom="16dp" />
 
         <!-- Actualización de estatus -->
@@ -162,7 +175,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Actualizar estatus:"
-            android:textStyle="bold"
+            android:textStyle="italic"
+            android:textSize="15dp"
             android:layout_marginBottom="4dp" />
 
         <Spinner
@@ -176,7 +190,7 @@
             android:layout_height="wrap_content"
             android:text="Comentario (opcional, obligatorio si es Detenido/Cancelado):"
             android:textStyle="bold"
-            android:textSize="15sp"
+            android:textSize="20dp"
             android:layout_marginBottom="4dp" />
 
         <EditText

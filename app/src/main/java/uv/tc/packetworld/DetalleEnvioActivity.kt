@@ -81,6 +81,8 @@ class DetalleEnvioActivity : AppCompatActivity() {
 
         binding.tvPaquetes.text = paquetes
         binding.tvNombreCliente.text = envio.nombreCliente ?: "N/A"
+        binding.tvTelefonoCliente.text = envio.telefonoCliente ?: "N/A"
+        binding.tvCorreoCliente.text = envio.correoCliente ?: "N/A"
     }
 
     private fun configurarSpinnerYBoton() {
