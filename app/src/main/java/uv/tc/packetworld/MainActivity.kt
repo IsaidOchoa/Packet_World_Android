@@ -138,7 +138,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnUnidad.setOnClickListener {
-            Toast.makeText(this, "Funcionalidad de Unidad aún no implementada", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, UnidadActivity::class.java).apply {
+                putExtra("idColaborador", colaborador.idColaborador)
+            }
+            startActivity(intent)
         }
 
         binding.ivLogout.setOnClickListener {

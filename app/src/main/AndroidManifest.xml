@@ -46,6 +46,11 @@
             android:name=".DetalleEnvioActivity"
             android:exported="false" />
 
+        <!-- Detalle de unidad -->
+        <activity
+            android:name=".UnidadActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
