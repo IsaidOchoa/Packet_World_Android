@@ -16,7 +16,7 @@ class ListaEnviosActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListaEnviosBinding
     private lateinit var adapter: EnvioAdapter
     private lateinit var numeroPersonal: String
-    private var idColaborador: Int = 0 // Almacenamos el ID para usarlo en onResume
+    private var idColaborador: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,6 @@ class ListaEnviosActivity : AppCompatActivity() {
             finish()
         }
 
-        // Leer el colaborador del Intent
         val json = intent.getStringExtra("colaborador") ?: run {
             Toast.makeText(this, "Error: colaborador no recibido", Toast.LENGTH_SHORT).show()
             finish()

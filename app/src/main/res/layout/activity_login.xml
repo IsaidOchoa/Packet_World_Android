@@ -35,7 +35,6 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
-        <!-- Subtítulo -->
         <TextView
             android:id="@+id/tvSubtitulo"
             android:layout_width="match_parent"
@@ -46,7 +45,6 @@
             android:textColor="#7F8C8D"
             android:textSize="16sp" />
 
-        <!-- Etiqueta y campo: Número Personal -->
         <TextView
             android:id="@+id/tv_label_numero_personal"
             android:layout_width="wrap_content"
@@ -70,7 +68,6 @@
             android:paddingEnd="16dp"
             android:textSize="16sp" />
 
-        <!-- Etiqueta y campo: Contraseña -->
         <TextView
             android:id="@+id/tv_label_password"
             android:layout_width="wrap_content"
@@ -101,7 +98,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón Ingresar -->
         <Button
             android:id="@+id/btnIngresar"
             android:layout_width="match_parent"

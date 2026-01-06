@@ -4,11 +4,11 @@ data class Colaborador(
     val idColaborador: Int = 0,
     val nombre: String = "",
     val apellidoPaterno: String = "",
-    val apellidoMaterno: String = "", // ← Cambiado a no nullable
+    val apellidoMaterno: String = "",
     val curp: String = "",
-    val correo: String = "",          // ← Cambiado a no nullable
+    val correo: String = "",
     val numeroPersonal: String = "",
-    val numeroLicencia: String = "",  // ← Cambiado a no nullable
+    val numeroLicencia: String = "",
     val idRol: Int = 0,
     val rol: String = "",
     val idSucursal: Int = 0,

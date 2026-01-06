@@ -42,7 +42,7 @@ class EdicionConductorActivity : AppCompatActivity() {
             }
         }
         binding.ivBack.setOnClickListener {
-            finish() // Esto regresará a MainActivity automáticamente
+            finish()
         }
     }
 

@@ -36,7 +36,6 @@ class EnvioAdapter(
         fun bind(envio: Envio) {
             binding.tvGuia.text = envio.numeroGuia
 
-            // ✅ Construir dirección completa a partir de los campos disponibles
             val direccionCompleta = "${envio.calleDestino} ${envio.numeroDestino}".trim()
             binding.tvDireccion.text = if (direccionCompleta.isNotEmpty()) direccionCompleta else "Sin dirección"
 

@@ -1,6 +1,4 @@
-// package uv.tc.packetworld.poko
 package uv.tc.packetworld.poko
-
 data class Envio(
     val idEnvio: Int = 0,
     val numeroGuia: String = "",
@@ -19,7 +17,6 @@ data class Envio(
     val idEstadoActual: Int = 0,
     val estatus: String = "",
 
-    // Campos adicionales del endpoint completo
     val nombreCliente: String? = null,
     val telefonoCliente: String? = null,
     val correoCliente: String? = null,

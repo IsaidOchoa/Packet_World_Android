@@ -47,7 +47,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Número Personal (NO editable) -->
             <TextView
                 android:id="@+id/tv_label_numero_personal"
                 android:layout_width="wrap_content"
@@ -66,7 +65,6 @@
                 android:textSize="14sp"
                 android:textColor="#7F8C8D"/>
 
-            <!-- Sucursal (NO editable) -->
             <TextView
                 android:id="@+id/tv_label_sucursal"
                 android:layout_width="wrap_content"
@@ -87,7 +85,6 @@
                 android:textColor="#7F8C8D"
                 android:textSize="14sp" />
 
-            <!-- Rol (NO editable) -->
             <TextView
                 android:id="@+id/tv_label_rol"
                 android:layout_width="wrap_content"
@@ -113,7 +110,6 @@
                 android:layout_marginTop="16dp"
                 android:background="#000000" />
 
-            <!-- Nombre -->
             <TextView
                 android:id="@+id/tv_label_nombre"
                 android:layout_width="wrap_content"
@@ -134,7 +130,6 @@
                 android:autofillHints="name"
                 android:hint="Nombre" />
 
-            <!-- Apellido Paterno -->
             <TextView
                 android:id="@+id/tv_label_apellido_paterno"
                 android:layout_width="wrap_content"
@@ -155,7 +150,6 @@
                 android:autofillHints="familyName"
                 android:hint="Apellido Paterno" />
 
-            <!-- Apellido Materno -->
             <TextView
                 android:id="@+id/tv_label_apellido_materno"
                 android:layout_width="wrap_content"
@@ -176,7 +170,6 @@
                 android:autofillHints="familyName"
                 android:hint="Apellido Materno" />
 
-            <!-- Correo -->
             <TextView
                 android:id="@+id/tv_label_correo"
                 android:layout_width="wrap_content"
@@ -197,7 +190,6 @@
                 android:autofillHints="emailAddress"
                 android:hint="Correo Electrónico" />
 
-            <!-- Número de Licencia (solo para conductores) -->
             <TextView
                 android:id="@+id/tv_label_licencia"
                 android:layout_width="wrap_content"
@@ -219,7 +211,7 @@
                 android:hint="Número de Licencia"
                 android:visibility="gone"/>
 
-            <!-- Sección de Cambio de Contraseña -->
+            <!-- Seccion de Cambio de password -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -310,7 +302,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botón Actualizar -->
             <Button
                 android:id="@+id/btnActualizar"
                 android:layout_width="match_parent"
@@ -322,5 +313,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

@@ -107,7 +107,6 @@ class DetalleEnvioActivity : AppCompatActivity() {
             val estatusTexto = binding.spinnerEstatus.selectedItem.toString()
             val comentario = binding.etComentario.text.toString().trim()
 
-            // --- VALIDACIÓN DE COMENTARIO PARA ESTADOS QUE LO REQUIEREN ---
             if ((estatusTexto == "Detenido" || estatusTexto == "Cancelado") && comentario.isEmpty()) {
                 Toast.makeText(
                     this,
@@ -123,7 +122,6 @@ class DetalleEnvioActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // --- DIÁLOGOS DE CONFIRMACIÓN PARA ACCIONES IRREVERSIBLES ---
             when (estatusTexto) {
                 "Entregado" -> {
                     mostrarConfirmacionEntrega(idEnvioActual, idEstado, comentario, estatusTexto)
@@ -132,7 +130,6 @@ class DetalleEnvioActivity : AppCompatActivity() {
                     mostrarConfirmacionCancelacion(idEnvioActual, idEstado, comentario, estatusTexto)
                 }
                 else -> {
-                    // Para "En tránsito" y "Detenido", actualiza directamente
                     actualizarEstatusEnServidor(idEnvioActual, idEstado, comentario, estatusTexto)
                 }
             }

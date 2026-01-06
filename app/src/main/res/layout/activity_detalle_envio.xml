@@ -36,7 +36,6 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -170,7 +169,6 @@
             android:textSize="20dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Actualización de estatus -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

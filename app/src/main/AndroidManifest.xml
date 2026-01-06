@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permiso obligatorio para hacer peticiones HTTP -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -26,31 +25,25 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity: pantalla principal tras login -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
-        <!-- Edición de perfil del conductor -->
         <activity
             android:name=".EdicionConductorActivity"
             android:exported="false" />
 
-        <!-- Lista de envíos asignados al conductor -->
         <activity
             android:name=".ListaEnviosActivity"
             android:exported="false" />
 
-        <!-- Detalle de un envío específico -->
         <activity
             android:name=".DetalleEnvioActivity"
             android:exported="false" />
 
-        <!-- Detalle de unidad -->
         <activity
             android:name=".UnidadActivity"
             android:exported="false" />
 
     </application>
-
 </manifest>

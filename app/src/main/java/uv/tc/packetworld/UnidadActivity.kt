@@ -15,7 +15,6 @@ class UnidadActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUnidadBinding
     private var idColaborador = 0
 
-    // Mapeo local de idTipoUnidad a nombre
     private val tipoUnidadMap = mapOf(
         1 to "Gasolina",
         2 to "Diesel",
@@ -70,9 +69,6 @@ class UnidadActivity : AppCompatActivity() {
     }
 
     private fun mostrarDatosUnidad(unidad: Unidad) {
-        // La imagen se carga automáticamente desde el XML (android:src)
-        // Si quieres cambiarla programáticamente, usa:
-        // binding.ivImagenUnidad.setImageResource(R.drawable.ic_car_default)
 
         binding.tvMarca.text = unidad.marca ?: "N/A"
         binding.tvModelo.text = unidad.modelo ?: "N/A"
@@ -80,7 +76,6 @@ class UnidadActivity : AppCompatActivity() {
         binding.tvVin.text = unidad.vin ?: "N/A"
         binding.tvNii.text = unidad.nii ?: "N/A"
 
-        // Convertir idTipoUnidad a texto
         val tipoTexto = tipoUnidadMap[unidad.idTipoUnidad] ?: "Desconocido (${unidad.idTipoUnidad})"
         binding.tvTipoUnidad.text = tipoTexto
 

@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -111,7 +110,7 @@ class MainActivity : AppCompatActivity() {
     private fun configurarEventos() {
         binding.ivEditarConductor.setOnClickListener {
             val gson = Gson()
-            val colaboradorLigero = colaborador.copy(fotoBase64 = null) // Quitamos la foto
+            val colaboradorLigero = colaborador.copy(fotoBase64 = null)
             val jsonLigero = gson.toJson(colaboradorLigero)
             val intent = Intent(this, EdicionConductorActivity::class.java).apply {
                 putExtra("colaborador", jsonLigero)
@@ -120,8 +119,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ivSeleccionFoto.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            intent.type = "image/*"
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "image/*"
+                addCategory(Intent.CATEGORY_OPENABLE)
+            }
             seleccionarFotoPerfil.launch(intent)
         }
 
@@ -169,13 +170,10 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                // Opcional: poner imagen por defecto si falla
             }
         }
-        // Si no hay foto, se mantiene la imagen por defecto del ImageView
     }
 
-    // =============== ACTUALIZACIÓN DE FOTO ===============
     private fun editarFotoPerfil(fotoBase64: String) {
         val gson = Gson()
         val cuerpo = mapOf(
@@ -190,6 +188,8 @@ class MainActivity : AppCompatActivity() {
             .setCallback { e, result ->
                 runOnUiThread {
                     if (e == null && !result.isNullOrBlank()) {
+                        println("Respuesta del servidor al guardar foto: $result")
+
                         try {
                             val respuesta = gson.fromJson(result, uv.tc.packetworld.dto.Respuesta::class.java)
                             if (!respuesta.error) {
@@ -197,11 +197,11 @@ class MainActivity : AppCompatActivity() {
                                 mostrarFotoPerfil()
                                 Toast.makeText(this, "Foto actualizada correctamente", Toast.LENGTH_LONG).show()
                             } else {
-                                Toast.makeText(this, "Error: ${respuesta.mensaje}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this, "Error del servidor: ${respuesta.mensaje}", Toast.LENGTH_LONG).show()
                             }
                         } catch (ex: Exception) {
                             ex.printStackTrace()
-                            Toast.makeText(this, "Error al procesar respuesta", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this, "Error al procesar respuesta: ${ex.message}", Toast.LENGTH_LONG).show()
                         }
                     } else {
                         Toast.makeText(this, "Error de conexión al guardar foto", Toast.LENGTH_LONG).show()
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    // =============== MANEJO DE RESULTADOS ===============
+    // MANEJO DE RESULTADOS
     private val editarConductor = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity() {
                 bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, baos)
                 val bytes = baos.toByteArray()
                 baos.close()
-                Base64.encodeToString(bytes, Base64.DEFAULT)
+                Base64.encodeToString(bytes, Base64.NO_WRAP)
             }
         } catch (e: Exception) {
             e.printStackTrace()

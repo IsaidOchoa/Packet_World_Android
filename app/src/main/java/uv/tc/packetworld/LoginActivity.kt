@@ -10,7 +10,6 @@ import com.koushikdutta.ion.Ion
 import uv.tc.packetworld.databinding.ActivityLoginBinding
 import uv.tc.packetworld.dto.RSAutenticacionColaborador
 import uv.tc.packetworld.util.Constantes
-//import uv.tc.packetworld.util.setupPasswordToggle
 
 class LoginActivity : AppCompatActivity() {
 
@@ -20,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //binding.etPassword.setupPasswordToggle()
 
         binding.btnIngresar.setOnClickListener {
             verificarCredenciales()
@@ -43,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
             binding.etNumeroPersonal.error = "Número Personal obligatorio"
             valido = false
         } else {
-            // Limpiar el error si el campo ya está lleno
             binding.etNumeroPersonal.error = null
         }
 
@@ -51,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
             binding.etPassword.error = "Contraseña obligatoria"
             valido = false
         } else {
-            // Limpiar el error si el campo ya está lleno
             binding.etPassword.error = null
         }
 
