@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
         Ion.getDefault(this).conscryptMiddleware.enable(false)
 
         Ion.with(this)
-            .load("POST", "${Constantes().URL_API}autenticacion/login")
+            .load("POST", "${Constantes().URL_API}colaborador/login-movil")
             .setHeader("Content-Type", "application/x-www-form-urlencoded")
             .setBodyParameter("noPersonal", numeroPersonal)
             .setBodyParameter("password", password)

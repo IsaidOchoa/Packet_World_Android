@@ -2,6 +2,7 @@ package uv.tc.packetworld
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,18 +60,39 @@ class ListaEnviosActivity : AppCompatActivity() {
             .load("${Constantes().URL_API}envio/conductor/$numeroPersonal")
             .asJsonArray()
             .setCallback { e, jsonArray ->
-                if (e == null && jsonArray != null) {
+                runOnUiThread {
+                    if (e != null) {
+                        e.printStackTrace()
+                        Toast.makeText(this, "Error al cargar los envíos", Toast.LENGTH_LONG).show()
+                        return@runOnUiThread
+                    }
+
+                    // ✅ Si jsonArray es null o vacío → sin envíos
+                    if (jsonArray == null || jsonArray.size() == 0) {
+                        mostrarMensajeSinEnvios()
+                        return@runOnUiThread
+                    }
+
                     try {
                         val envios = Gson().fromJson(jsonArray, Array<Envio>::class.java).toList()
-                        adapter.updateEnvios(envios)
+                        mostrarListaEnvios(envios)
                     } catch (ex: Exception) {
                         ex.printStackTrace()
-                        Toast.makeText(this, "Error al procesar envíos", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Error al procesar los envíos", Toast.LENGTH_LONG).show()
+                        mostrarMensajeSinEnvios()
                     }
-                } else {
-                    Toast.makeText(this, "No se pudieron cargar los envíos", Toast.LENGTH_LONG).show()
-                    e?.printStackTrace()
                 }
             }
+    }
+
+    private fun mostrarListaEnvios(envios: List<Envio>) {
+        adapter.updateEnvios(envios)
+        binding.rvEnvios.visibility = View.VISIBLE
+        binding.cvMensajeSinEnvios.visibility = View.GONE
+    }
+
+    private fun mostrarMensajeSinEnvios() {
+        binding.rvEnvios.visibility = View.GONE
+        binding.cvMensajeSinEnvios.visibility = View.VISIBLE
     }
 }
