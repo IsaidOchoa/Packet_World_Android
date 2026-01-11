@@ -63,6 +63,7 @@
             android:background="@drawable/bg_input_field"
             android:hint="Ej. 000"
             android:inputType="text"
+            android:maxLength="30"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"

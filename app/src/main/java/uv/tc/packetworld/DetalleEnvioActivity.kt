@@ -107,6 +107,11 @@ class DetalleEnvioActivity : AppCompatActivity() {
             val estatusTexto = binding.spinnerEstatus.selectedItem.toString()
             val comentario = binding.etComentario.text.toString().trim()
 
+            if (comentario.length > 500) {
+                Toast.makeText(this, "El comentario no puede exceder los 500 caracteres", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
             if ((estatusTexto == "Detenido" || estatusTexto == "Cancelado") && comentario.isEmpty()) {
                 Toast.makeText(
                     this,
@@ -118,7 +123,7 @@ class DetalleEnvioActivity : AppCompatActivity() {
 
             val idEstado = estatusAId[estatusTexto]
             if (idEstado == null || idEnvioActual <= 0) {
-                Toast.makeText(this, "Datos inválidos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Datos inválidos", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 

@@ -37,8 +37,16 @@ class LoginActivity : AppCompatActivity() {
     private fun sonCamposValidos(): Boolean {
         var valido = true
 
-        if (binding.etNumeroPersonal.text.isNullOrBlank()) {
+        val numeroPersonal = binding.etNumeroPersonal.text.toString().trim()
+
+        if (numeroPersonal.isEmpty()) {
             binding.etNumeroPersonal.error = "Número Personal obligatorio"
+            valido = false
+        } else if (numeroPersonal.length > 30) {
+            binding.etNumeroPersonal.error = "Máximo 30 caracteres"
+            valido = false
+        } else if (!numeroPersonal.matches(Regex("^[A-Za-z0-9\\-]+\$"))) {
+            binding.etNumeroPersonal.error = "Solo letras, números y guion (-)"
             valido = false
         } else {
             binding.etNumeroPersonal.error = null

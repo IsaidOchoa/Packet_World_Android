@@ -78,31 +78,82 @@ class EdicionConductorActivity : AppCompatActivity() {
     private fun sonCamposValidos(): Boolean {
         var valido = true
 
-        if (binding.etNombre.text.isNullOrBlank()) {
+        // Validar nombre
+        val nombre = binding.etNombre.text.toString().trim()
+        if (nombre.isEmpty()) {
             binding.etNombre.error = "Nombre obligatorio"
+            valido = false
+        } else if (nombre.length > 30) {
+            binding.etNombre.error = "Máximo 30 caracteres"
+            valido = false
+        } else if (!nombre.matches(Regex("^[a-zA-ZáéíóúñÁÉÍÓÚÑ\\s]+\$"))) {
+            binding.etNombre.error = "Solo letras y espacios"
             valido = false
         } else {
             binding.etNombre.error = null
         }
 
-        if (binding.etApellidoPaterno.text.isNullOrBlank()) {
+        // Validar apellido paterno
+        val apellidoP = binding.etApellidoPaterno.text.toString().trim()
+        if (apellidoP.isEmpty()) {
             binding.etApellidoPaterno.error = "Apellido paterno obligatorio"
+            valido = false
+        } else if (apellidoP.length > 30) {
+            binding.etApellidoPaterno.error = "Máximo 30 caracteres"
+            valido = false
+        } else if (!apellidoP.matches(Regex("^[a-zA-ZáéíóúñÁÉÍÓÚÑ\\s]+\$"))) {
+            binding.etApellidoPaterno.error = "Solo letras y espacios"
             valido = false
         } else {
             binding.etApellidoPaterno.error = null
         }
 
-        if (binding.etCorreo.text.isNullOrBlank()) {
+        // Validar apellido materno
+        val apellidoM = binding.etApellidoMaterno.text.toString().trim()
+        if (apellidoM.isNotEmpty()) {
+            if (apellidoM.length > 30) {
+                binding.etApellidoMaterno.error = "Máximo 30 caracteres"
+                valido = false
+            } else if (!apellidoM.matches(Regex("^[a-zA-ZáéíóúñÁÉÍÓÚÑ\\s]+\$"))) {
+                binding.etApellidoMaterno.error = "Solo letras y espacios"
+                valido = false
+            } else {
+                binding.etApellidoMaterno.error = null
+            }
+        }
+
+        // Validar correo
+        val correo = binding.etCorreo.text.toString().trim()
+        if (correo.isEmpty()) {
             binding.etCorreo.error = "Correo obligatorio"
             valido = false
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etCorreo.text.toString()).matches()) {
+        } else if (correo.length > 40) {
+            binding.etCorreo.error = "Máximo 40 caracteres"
+            valido = false
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
             binding.etCorreo.error = "Correo inválido"
             valido = false
         } else {
             binding.etCorreo.error = null
         }
 
-        // Verificar si se quiere cambiar la contraseña
+        if (colaborador.idRol == 3) {
+            val licencia = binding.etLicencia.text.toString().trim()
+            if (licencia.isEmpty()) {
+                binding.etLicencia.error = "Número de licencia obligatorio"
+                valido = false
+            } else if (licencia.length > 30) {
+                binding.etLicencia.error = "Máximo 30 caracteres"
+                valido = false
+            } else if (!licencia.matches(Regex("^[A-Za-z0-9\\-]+\$"))) {
+                binding.etLicencia.error = "Solo letras, números y guion (-)"
+                valido = false
+            } else {
+                binding.etLicencia.error = null
+            }
+        }
+
+        // Validación de contraseña
         if (!binding.etPasswordNueva.text.isNullOrBlank()) {
             if (binding.etPasswordActual.text.isNullOrBlank()) {
                 binding.etPasswordActual.error = "Requerida para cambiar contraseña"
